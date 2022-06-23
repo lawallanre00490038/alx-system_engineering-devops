@@ -1,1 +1,3 @@
-this is the readme file for devops
+#!/bin/bash
+repo directory
+
