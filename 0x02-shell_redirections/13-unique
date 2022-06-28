@@ -1,2 +1,2 @@
 #!/bin/bash
-cat print_it.txt | sort |uniq -u
+sort | uniq -u
