@@ -1,3 +1,1 @@
-#!/bin/bash
-repo directory
-
+read me:
