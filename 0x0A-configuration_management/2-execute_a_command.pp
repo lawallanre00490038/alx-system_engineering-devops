@@ -1,3 +1,4 @@
+#!/usr/bin/env puppet
 # execute pkill command to kill bashscript file killmenow
 exec { 'pkill':
   command => 'pkill -9 -f killmenow',
