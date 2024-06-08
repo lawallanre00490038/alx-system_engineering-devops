@@ -7,24 +7,24 @@ import re
 import requests
 import sys
 
-BASE_URL = "https://jsonplaceholder.typicode.com/"
-userID = sys.argv[1]
+REST_API = "https://jsonplaceholder.typicode.com"
 
 if __name__ == '__main__':
     if len(sys.argv) > 1:
-        try:
-            res_name = requests.get(BASE_URL + f"users/{userID}")
-            name = res_name.json().get("name")
-            todos = requests.get(BASE_URL + f"todos?userId={userID}").json()
-            completed = [todo for todo in todos
-                         if todo.get("completed")
-                         is True]
-
-            print("Employee {} is done with tasks {}/{}:"
-                  .format(name, len(completed), len(todos)))
-
-            if len(todos) > 1:
-                for todo in todos:
-                    print("\t{}".format(todo.get("title")))
-        except Exception as e:
-            print(e)
+        if re.fullmatch(r'\d+', sys.argv[1]):
+            id = int(sys.argv[1])
+            req = requests.get('{}/users/{}'.format(REST_API, id)).json()
+            task_req = requests.get('{}/todos'.format(REST_API)).json()
+            emp_name = req.get('name')
+            tasks = list(filter(lambda x: x.get('userId') == id, task_req))
+            completed_tasks = list(filter(lambda x: x.get('completed'), tasks))
+            print(
+                'Employee {} is done with tasks({}/{}):'.format(
+                    emp_name,
+                    len(completed_tasks),
+                    len(tasks)
+                )
+            )
+            if len(completed_tasks) > 0:
+                for task in completed_tasks:
+                    print('\t {}'.format(task.get('title')))
